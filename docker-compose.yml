@@ -1,0 +1,45 @@
+version: "3.4"
+services:
+  app:
+    volumes:
+      - "./:/app"
+      - "./docker/php/.user.ini:/usr/local/etc/php/php.ini"
+    working_dir: /app
+    command: "php artisan serve --host=0.0.0.0 --port=8000"
+    ports:
+      - 8001:8000
+    build:
+      context: docker/php
+      dockerfile: dev.Dockerfile
+    networks:
+      - app-network
+
+  db:
+    image: mariadb
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_DATABASE: ${DB_DATABASE}
+    ports:
+      - 3308:3306
+    volumes:
+      - "db-data:/var/lib/mysql/data"
+    networks:
+      - app-network
+  # PHPMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: lara_calendar_phpmyadmin
+    restart: unless-stopped
+    links:
+      - db
+    ports:
+      - 8182:80
+    networks:
+      - app-network
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data: {}
