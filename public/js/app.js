@@ -2039,6 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _helper_Calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../helper/Calendar */ "./resources/js/helper/Calendar.vue");
 /* harmony import */ var _Form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Form */ "./resources/js/components/Events/Form.vue");
+/* harmony import */ var _mixins_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../mixins/index */ "./resources/mixins/index.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -2066,8 +2067,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [vuelidate__WEBPACK_IMPORTED_MODULE_1__["validationMixin"]],
+  mixins: [vuelidate__WEBPACK_IMPORTED_MODULE_1__["validationMixin"], _mixins_index__WEBPACK_IMPORTED_MODULE_5__["mixin"]],
   components: {
     Calendar: _helper_Calendar__WEBPACK_IMPORTED_MODULE_3__["default"],
     EventForm: _Form__WEBPACK_IMPORTED_MODULE_4__["default"]
@@ -2150,7 +2152,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       response.then(function (response) {
         vm.setData(response.data);
       })["catch"](function (err) {
-        console.log(err);
+        vm.notification.title = '';
+        vm.notification.type = 'danger';
+        vm.notification.text = 'Error encountered.';
+        vm.notifyApp();
       });
     },
     setData: function setData(_ref2) {
@@ -77918,15 +77923,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************!*\
   !*** ./resources/js/components/layouts/Sidebar.vue ***!
   \*****************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Sidebar_vue_vue_type_template_id_54bfa98a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=template&id=54bfa98a& */ "./resources/js/components/layouts/Sidebar.vue?vue&type=template&id=54bfa98a&");
 /* harmony import */ var _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=script&lang=js& */ "./resources/js/components/layouts/Sidebar.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Sidebar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/layouts/Sidebar.vue?vue&type=style&index=0&lang=css&");
+/* empty/unused harmony star reexport *//* harmony import */ var _Sidebar_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Sidebar.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/layouts/Sidebar.vue?vue&type=style&index=0&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -77958,7 +77962,7 @@ component.options.__file = "resources/js/components/layouts/Sidebar.vue"
 /*!******************************************************************************!*\
   !*** ./resources/js/components/layouts/Sidebar.vue?vue&type=script&lang=js& ***!
   \******************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78100,7 +78104,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "routes", function() { return routes; });
 /* harmony import */ var _components_Events_Index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Events/Index */ "./resources/js/components/Events/Index.vue");
-/* harmony import */ var _components_OtherPage_Index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/OtherPage/Index */ "./resources/js/components/OtherPage/Index.vue");
+/* harmony import */ var _components_OtherPage_Index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/OtherPage/Index */ "./resources/js/components/OtherPage/Index.vue");
 
 
 var routes = [{
@@ -78109,7 +78113,7 @@ var routes = [{
   name: 'home'
 }, {
   path: '/other',
-  component: _components_OtherPage_Index__WEBPACK_IMPORTED_MODULE_2__["default"],
+  component: _components_OtherPage_Index__WEBPACK_IMPORTED_MODULE_1__["default"],
   name: 'home'
 }];
 

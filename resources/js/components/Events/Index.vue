@@ -18,21 +18,18 @@
 </template>
 
 <script>
-
-
 //import our database functionalities from our model
 
 import { getEvents, addEvent } from './EventModel'
-
 import { validationMixin } from 'vuelidate'
 import { required, minLength } from 'vuelidate/lib/validators'
-
 import Calendar from '../../helper/Calendar'
 import EventForm from './Form'
 
+import {mixin} from '../../../mixins/index'
 
 export default {
-    mixins: [validationMixin],
+    mixins: [validationMixin,mixin],
     components: {
         Calendar,
         EventForm
@@ -113,7 +110,10 @@ export default {
                 response.then(function(response){
                       vm.setData(response.data);
                 }).catch(function(err){
-                    console.log(err);
+                    vm.notification.title ='';
+                    vm.notification.type ='danger';
+                    vm.notification.text = 'Error encountered.';
+                    vm.notifyApp();
                 });
             },
             setData({data,links,meta}) {

@@ -5,11 +5,11 @@ RUN apt-get update -yqq && \
     apt-get install -y nano && \
     apt-get install -y libzip-dev libpq-dev && \
     a2enmod rewrite && \
-    docker-php-ext-install pdo_pgsql && \
-    docker-php-ext-install pgsql && \
     docker-php-ext-configure zip --with-libzip && \
     docker-php-ext-install zip && \
     rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 
