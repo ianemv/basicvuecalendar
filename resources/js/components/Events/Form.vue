@@ -97,6 +97,10 @@ export default {
             let vm = this;
             resp.then(function(response){
                 vm.$eventHub.$emit('update-list');
+                vm.notification.title ='';
+                vm.notification.type ='success';
+                vm.notification.text = 'Added new events';
+                vm.notifyApp();
             })
             .catch(function(error){
                 console.log(error);

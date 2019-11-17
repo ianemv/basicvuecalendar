@@ -1953,6 +1953,10 @@ var weekdaysData = [{
       var vm = this;
       resp.then(function (response) {
         vm.$eventHub.$emit('update-list');
+        vm.notification.title = '';
+        vm.notification.type = 'success';
+        vm.notification.text = 'Added new events';
+        vm.notifyApp();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2353,9 +2357,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
-/* harmony import */ var _Events_EventModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Events/EventModel */ "./resources/js/components/Events/EventModel.js");
-/* harmony import */ var _mixins_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/index */ "./resources/mixins/index.js");
 //
 //
 //
@@ -2363,173 +2364,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-var dateFormat = 'YYYY-MM-DD';
-var weekdaysData = [{
-  day: 'Mon',
-  display: 'Mon',
-  id: 'day_1'
-}, {
-  day: 'Tue',
-  display: 'Tue',
-  id: 'day_2'
-}, {
-  day: 'Wed',
-  display: 'Wed',
-  id: 'day_3'
-}, {
-  day: 'Thu',
-  display: 'Thu',
-  id: 'day_4'
-}, {
-  day: 'Fri',
-  display: 'Fri',
-  id: 'day_5'
-}, {
-  day: 'Sat',
-  display: 'Sat',
-  id: 'day_6'
-}, {
-  day: 'Sun',
-  display: 'Sun',
-  id: 'day_7'
-}];
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_index__WEBPACK_IMPORTED_MODULE_2__["mixin"]],
-  components: {
-    Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  props: {
-    weekdays: {
-      type: Array,
-      "default": function _default() {
-        return weekdaysData;
-      }
-    }
-  },
-  data: function data() {
-    return {
-      form: {
-        fromDate: '',
-        toDate: '',
-        eventTitle: '',
-        weekdays: []
-      }
-    };
-  },
   name: 'sidebar',
-  created: function created() {
-    this.notification.group = 'foo';
+  data: function data() {
+    return {};
   },
-  methods: {
-    submitPost: function submitPost(e) {
-      e.preventDefault();
-      if (!this.validateForm()) return;
-      var postData = {
-        events: this.composePostData(),
-        from_date: this.moment(this.form.fromDate).format(dateFormat),
-        end_date: this.moment(this.form.toDate).format(dateFormat)
-      };
-      var resp = Object(_Events_EventModel__WEBPACK_IMPORTED_MODULE_1__["addEvent"])(postData);
-      var vm = this;
-      resp.then(function (response) {
-        vm.$eventHub.$emit('update-list');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    validateForm: function validateForm() {
-      this.notification.title = "Important message";
-
-      if (this.form.eventTitle == '') {
-        this.notification.text = "Please input title";
-        this.notifyApp();
-        return false;
-      }
-
-      if (this.form.fromDate == '' || this.form.toDate == '') {
-        this.notification.text = "Please input valid dates.";
-        this.notifyApp();
-        return false;
-      }
-
-      if (this.moment(this.form.fromDate) > this.moment(this.form.toDate)) {
-        this.notification.text = "Start date should be earlier than end date.";
-        this.notifyApp();
-        return;
-      }
-
-      if (this.form.weekdays.length == 0) {
-        this.notification.text = "Please select weekdays";
-        this.notifyApp();
-        return false;
-      }
-
-      return true;
-    },
-    composePostData: function composePostData() {
-      var startOfMonth = this.moment(this.form.fromDate);
-      var endOfMonth = this.moment(this.form.toDate);
-      var day = startOfMonth.clone();
-      var arr = [];
-
-      while (day <= endOfMonth) {
-        if (this.form.weekdays.indexOf(day.format('ddd')) > -1) {
-          event = {
-            event_date: day.format('YYYY-MM-DD'),
-            title: this.form.eventTitle
-          };
-          arr.push(event);
-        }
-
-        day.add(1, 'days');
-      }
-
-      return arr;
-    },
-    resetForm: function resetForm() {
-      this.form = {
-        fromDate: '',
-        toDate: '',
-        eventTitle: '',
-        weekdays: []
-      };
-    }
-  }
+  created: function created() {},
+  methods: {}
 });
 
 /***/ }),
@@ -56899,167 +56740,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-md-block", attrs: { id: "sidebar" } }, [
-    _c("form", [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-          _vm._v("Event")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.form.eventTitle,
-              expression: "form.eventTitle"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            "aria-describedby": "emailHelp",
-            placeholder: "Event title"
-          },
-          domProps: { value: _vm.form.eventTitle },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.form, "eventTitle", $event.target.value)
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col" },
-          [
-            _c("datepicker", {
-              attrs: { name: "startdate", "input-class": "form-control" },
-              model: {
-                value: _vm.form.fromDate,
-                callback: function($$v) {
-                  _vm.$set(_vm.form, "fromDate", $$v)
-                },
-                expression: "form.fromDate"
-              }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col" },
-          [
-            _c("datepicker", {
-              attrs: { name: "enddate", "input-class": "form-control" },
-              model: {
-                value: _vm.form.toDate,
-                callback: function($$v) {
-                  _vm.$set(_vm.form, "toDate", $$v)
-                },
-                expression: "form.toDate"
-              }
-            })
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row" },
-        [
-          _c(
-            "div",
-            { staticClass: "col" },
-            _vm._l(_vm.weekdays, function(week) {
-              return _c(
-                "div",
-                { key: week.id, staticClass: "form-check form-check-inline" },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form.weekdays,
-                        expression: "form.weekdays"
-                      }
-                    ],
-                    staticClass: "form-check-input",
-                    attrs: { type: "checkbox", id: "inlineCheckbox" + week.id },
-                    domProps: {
-                      value: week.day,
-                      checked: Array.isArray(_vm.form.weekdays)
-                        ? _vm._i(_vm.form.weekdays, week.day) > -1
-                        : _vm.form.weekdays
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.form.weekdays,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = week.day,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(_vm.form, "weekdays", $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.form,
-                                "weekdays",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(_vm.form, "weekdays", $$c)
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "form-check-label",
-                      attrs: { for: "'inlineCheckbox'+week.id" }
-                    },
-                    [_vm._v(_vm._s(week.display))]
-                  )
-                ]
-              )
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c("notifications", { attrs: { group: "foo" } })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { type: "submit" },
-              on: { click: _vm.submitPost }
-            },
-            [_vm._v("Save")]
-          )
-        ])
-      ])
-    ])
-  ])
+  return _c("div", { staticClass: "d-md-block", attrs: { id: "sidebar" } })
 }
 var staticRenderFns = []
 render._withStripped = true
