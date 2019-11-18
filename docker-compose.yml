@@ -1,35 +1,57 @@
-version: "3.4"
+version: "3"
 services:
+
   app:
-    volumes:
-      - "./:/app"
-      - "./docker/web/.user.ini:/usr/local/etc/php/php.ini"
-    working_dir: /app
-    command: "php artisan serve --host=0.0.0.0 --port=80"
-    ports:
-      - 8001:80
     build:
-      context: docker/web
-      dockerfile: dev.Dockerfile
+      context: .
+      dockerfile: ./docker/web/dev.Dockerfile
+    image: digitalocean.com/php
+    container_name: lara_calendar_app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: lara_calendar_app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/web/.user.ini/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
-    depends_on:
-      - db
-    links:
-      - db
+
+ #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8001:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
 
   db:
     image: mariadb
     container_name: lara_calendar_db
+    restart: unless-stopped
+    tty: true
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
       MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
     ports:
       - 3308:3306
     volumes:
-      - "db-data:/var/lib/mysql/data"
+      - "dbdata:/var/lib/mysql/data"
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - app-network
+
   # PHPMyAdmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -41,10 +63,13 @@ services:
       - 8182:80
     networks:
       - app-network
+
 #Docker Networks
 networks:
   app-network:
     driver: bridge
 
 volumes:
-  db-data: {}
+  dbdata:
+    driver: local
+
