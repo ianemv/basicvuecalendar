@@ -7,9 +7,9 @@ services:
     restart: always
     tty: true
     environment:
-      MYSQL_USER: root
-      MYSQL_DATABASE: localevents
-      MYSQL_ROOT_PASSWORD: pipsology
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     ports:
@@ -18,8 +18,6 @@ services:
       - dbdata:/var/lib/mysql
     networks:
       - app-network
-    healthcheck:
-      test:  mysql --user=root --password=pipsology -e 'Design your own check script ' LastSchema
 
   app:
     build:
