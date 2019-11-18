@@ -1,5 +1,25 @@
-version: "3"
+version: '3'
+
 services:
+  db:
+    image: mariadb:latest
+    container_name: lara_calendar_db
+    restart: always
+    tty: true
+    environment:
+      MYSQL_USER: root
+      MYSQL_DATABASE: localevents
+      MYSQL_ROOT_PASSWORD: pipsology
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - "3308:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test:  mysql --user=root --password=pipsology -e 'Design your own check script ' LastSchema
 
   app:
     build:
@@ -7,8 +27,10 @@ services:
       dockerfile: ./docker/web/dev.Dockerfile
     image: digitalocean.com/php
     container_name: lara_calendar_app
-    restart: unless-stopped
+    restart: always
     tty: true
+    depends_on:
+      - db
     environment:
       SERVICE_NAME: lara_calendar_app
       SERVICE_TAGS: dev
@@ -22,7 +44,7 @@ services:
  #Nginx Service
   webserver:
     image: nginx:alpine
-    container_name: webserver
+    container_name: lara_calendar_webserver
     restart: unless-stopped
     tty: true
     ports:
@@ -34,33 +56,21 @@ services:
     networks:
       - app-network
 
-  db:
-    image: mariadb
-    container_name: lara_calendar_db
-    restart: unless-stopped
-    tty: true
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    ports:
-      - 3308:3306
-    volumes:
-      - "dbdata:/var/lib/mysql/data"
-      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-    networks:
-      - app-network
-
   # PHPMyAdmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: lara_calendar_phpmyadmin
-    restart: unless-stopped
+    restart: always
     links:
-      - db
+      - db:mysql
     ports:
       - 8182:80
+    depends_on:
+      - db
+    environment:
+      MYSQL_USERNAME: ${DB_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      PMA_PORT: 3306
     networks:
       - app-network
 
